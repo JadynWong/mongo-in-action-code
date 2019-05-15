@@ -8,11 +8,11 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) \
     unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 require 'names'
 
-# Open a connection to MongoDB
-@con  = Mongo::MongoClient.new("localhost", 40000)
+# Open a connection to MongoDB 2.8
+@con  = Mongo::Client.new("mongodb://cloud:pwd@10.1.3.25:62201/cloud-docs")
 
 # Create a collection object for the "cloud-docs.spreadsheets" collection
-@col  = @con['cloud-docs']['spreadsheets']
+@col  = @con[:spreadsheets]
 
 # Fake spreadsheet data
 @data = "abcde" * 1000
@@ -28,7 +28,7 @@ def write_user_docs(iterations=0, name_count=200)
               :username => Names::LIST[name_number],
               :data => @data
             }
-      @col.insert(doc)
+      @col.insert_one(doc)
     end
   end
 end
